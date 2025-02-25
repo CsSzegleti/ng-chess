@@ -1,8 +1,8 @@
 <div class="grid">
   @for (tile of tiles; track $index; let idx = $index) {
-    <app-tile [color]="calculateBackground(idx)">
+    <app-tile [color]="calculateBackground(idx)" (click)="this.highligtedTileIdxChange.emit(idx)">
       <div *ngIf="this.tiles[idx].piece">
-        <img src="pieces/{{this.tiles[idx].piece?.getAssetName()}}" alt="asd">
+        <img src="pieces/{{this.tiles[idx].piece?.getAssetName()}}" alt="{{this.tiles[idx].piece?.getAssetName()}}">
       </div>
     </app-tile>
   }
