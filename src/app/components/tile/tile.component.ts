@@ -10,4 +10,5 @@ import { Color } from '../../enums/color';
 })
 export class TileComponent {
   @Input() color!: string;
+  @Input() isMarked: boolean = false;
 }

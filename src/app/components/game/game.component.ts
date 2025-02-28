@@ -17,14 +17,14 @@ import { BoardComponent } from "../board/board.component";
 })
 export class GameComponent {
   tiles: Array<Tile> = new Array(
-    new Tile(new Rook(Color.dark)), new Tile(new Knight(Color.dark)), new Tile(new Bishop(Color.dark)), new Tile(new Queen(Color.dark)), new Tile(new King(Color.dark)), new Tile(new Bishop(Color.dark)), new Tile(new Knight(Color.dark)), new Tile(new Rook(Color.dark)),
-    new Tile(new Pawn(Color.dark)), new Tile(new Pawn(Color.dark)), new Tile(new Pawn(Color.dark)), new Tile(new Pawn(Color.dark)), new Tile(new Pawn(Color.dark)), new Tile(new Pawn(Color.dark)), new Tile(new Pawn(Color.dark)), new Tile(new Pawn(Color.dark)),
+    new Tile(new Rook(Color.dark, 0)), new Tile(new Knight(Color.dark, 1)), new Tile(new Bishop(Color.dark, 2)), new Tile(new Queen(Color.dark, 3)), new Tile(new King(Color.dark, 4)), new Tile(new Bishop(Color.dark, 5)), new Tile(new Knight(Color.dark, 6)), new Tile(new Rook(Color.dark, 7)),
+    new Tile(new Pawn(Color.dark, 8)), new Tile(new Pawn(Color.dark, 9)), new Tile(new Pawn(Color.dark, 10)), new Tile(new Pawn(Color.dark, 11)), new Tile(new Pawn(Color.dark, 12)), new Tile(new Pawn(Color.dark, 13)), new Tile(new Pawn(Color.dark, 14)), new Tile(new Pawn(Color.dark, 15)),
     new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(),
     new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(),
     new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(),
     new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(),
-    new Tile(new Pawn(Color.light)), new Tile(new Pawn(Color.light)), new Tile(new Pawn(Color.light)), new Tile(new Pawn(Color.light)), new Tile(new Pawn(Color.light)), new Tile(new Pawn(Color.light)), new Tile(new Pawn(Color.light)), new Tile(new Pawn(Color.light)),
-    new Tile(new Rook(Color.light)), new Tile(new Knight(Color.light)), new Tile(new Bishop(Color.light)), new Tile(new Queen(Color.light)), new Tile(new King(Color.light)), new Tile(new Bishop(Color.light)), new Tile(new Knight(Color.light)), new Tile(new Rook(Color.light)),
+    new Tile(new Pawn(Color.light, 48)), new Tile(new Pawn(Color.light, 49)), new Tile(new Pawn(Color.light, 50)), new Tile(new Pawn(Color.light, 51)), new Tile(new Pawn(Color.light, 52)), new Tile(new Pawn(Color.light, 53)), new Tile(new Pawn(Color.light, 54)), new Tile(new Pawn(Color.light, 55)),
+    new Tile(new Rook(Color.light, 56)), new Tile(new Knight(Color.light, 57)), new Tile(new Bishop(Color.light, 58)), new Tile(new Queen(Color.light, 59)), new Tile(new King(Color.light, 60)), new Tile(new Bishop(Color.light, 61)), new Tile(new Knight(Color.light, 62)), new Tile(new Rook(Color.light, 63)),
   );
 
   highlightedTileIndex?: number = undefined;
