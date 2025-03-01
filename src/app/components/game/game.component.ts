@@ -8,6 +8,7 @@ import { Pawn } from '../../models/pieces/pawn';
 import { Queen } from '../../models/pieces/queen';
 import { Rook } from '../../models/pieces/rook';
 import { BoardComponent } from "../board/board.component";
+import { PawnMoveParserService } from '../../services/move/pawn-move-parser.service';
 
 @Component({
   selector: 'app-game',
@@ -16,6 +17,9 @@ import { BoardComponent } from "../board/board.component";
   styleUrl: './game.component.scss'
 })
 export class GameComponent {
+
+  constructor(private moveParser: PawnMoveParserService) { }
+
   tiles: Array<Tile> = new Array(
     new Tile(new Rook(Color.dark, 0)), new Tile(new Knight(Color.dark, 1)), new Tile(new Bishop(Color.dark, 2)), new Tile(new Queen(Color.dark, 3)), new Tile(new King(Color.dark, 4)), new Tile(new Bishop(Color.dark, 5)), new Tile(new Knight(Color.dark, 6)), new Tile(new Rook(Color.dark, 7)),
     new Tile(new Pawn(Color.dark, 8)), new Tile(new Pawn(Color.dark, 9)), new Tile(new Pawn(Color.dark, 10)), new Tile(new Pawn(Color.dark, 11)), new Tile(new Pawn(Color.dark, 12)), new Tile(new Pawn(Color.dark, 13)), new Tile(new Pawn(Color.dark, 14)), new Tile(new Pawn(Color.dark, 15)),
@@ -34,6 +38,7 @@ export class GameComponent {
   onHighlightedTileChange(tileIndex: number) {
     if (this.highlightedTileIndex === tileIndex) {
       this.highlightedTileIndex = undefined;
+      this.markedTileIndexes = []
       return;
     }
 
@@ -43,15 +48,24 @@ export class GameComponent {
 
     if (!this.highlightedTileIndex) {
       this.highlightedTileIndex = tileIndex;
+      this.markedTileIndexes = this.moveParser.possibleNewPosition(this.tiles, this.tiles[this.highlightedTileIndex].piece as Pawn) // TODO implement factory
       return;
     }
 
     this.movePiece(this.highlightedTileIndex, tileIndex);
     this.highlightedTileIndex = undefined
+    this.markedTileIndexes = []
   }
 
   private movePiece(fromIndex: number, toIndex: number) {
-    this.tiles[toIndex].piece = this.tiles[fromIndex].piece
-    this.tiles[fromIndex].piece = undefined
+    let fromTile = this.tiles[fromIndex];
+    let toTile = this.tiles[toIndex];
+
+    if (!fromTile.piece) {
+      return;
+    }
+    toTile.piece = fromTile.piece;
+    toTile.piece.position = toIndex;
+    fromTile.piece = undefined
   }
 }

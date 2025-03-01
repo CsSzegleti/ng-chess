@@ -5,4 +5,6 @@ export class King extends Piece {
   constructor(color: Color, position: number) {
     super(color, position, 'k')
   }
+
+  hasMoved = true;
 }
