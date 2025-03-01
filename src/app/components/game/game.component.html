@@ -1,1 +1,7 @@
-<app-board [tiles]="tiles" [highlightedTileIdx]="highlightedTileIndex" (highligtedTileIdxChange)="onHighlightedTileChange($event)">
+<app-board
+  [tiles]="tiles"
+  [highlightedTileIdx]="highlightedTileIndex"
+  [markedTiles]="markedTileIndexes"
+  (highligtedTileIdxChange)="onHighlightedTileChange($event)"
+>
+</app-board>

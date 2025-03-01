@@ -1,8 +1,6 @@
-<div class="tile" [ngClass]=color>
-  <div *ngIf="isMarked">
-    <span class="marked"></span>
+<div class="tile" [ngClass]="color">
+  <span *ngIf="isMarked" class="marked"></span>
+  <div>
+    <ng-content/>
   </div>
-  <ng-content>
-  </ng-content>
 </div>
-

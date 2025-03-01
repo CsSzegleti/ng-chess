@@ -29,6 +29,8 @@ export class GameComponent {
 
   highlightedTileIndex?: number = undefined;
 
+  markedTileIndexes: Array<number> = []
+
   onHighlightedTileChange(tileIndex: number) {
     if (this.highlightedTileIndex === tileIndex) {
       this.highlightedTileIndex = undefined;
