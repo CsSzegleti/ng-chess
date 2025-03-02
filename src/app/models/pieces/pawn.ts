@@ -2,7 +2,7 @@ import { Color } from '../../enums/color';
 import { Piece } from './piece';
 
 export class Pawn extends Piece {
-  isUntouched = true;
+  hasMoved = false;
 
   override get position(): number {
     return this._position;
@@ -10,7 +10,7 @@ export class Pawn extends Piece {
 
   override set position(newPosion: number) {
     this._position = newPosion;
-    this.isUntouched = false;
+    this.hasMoved = true;
   }
 
   constructor(color: Color, position: number) {

@@ -27,7 +27,7 @@ export class PawnMoveParserService implements MoveParserService<Pawn> {
     if (!board[newPosition].piece) {
       possibleIndexes.push(newPosition);
     }
-    if (pawn.isUntouched) {
+    if (!pawn.hasMoved) {
       newPosition = moveUp.getNewPosition(newPosition, pawn.color);
       if (!board[newPosition].piece) {
         possibleIndexes.push(newPosition);
