@@ -12,10 +12,7 @@ import {
   providedIn: 'root',
 })
 export class PawnMoveParserService implements MoveParserService<Pawn> {
-  possibleNewPosition(
-    board: Array<Tile>,
-    pawn: Pawn
-  ): Array<number> {
+  possibleNewPosition(board: Array<Tile>, pawn: Pawn): Array<number> {
     const possibleIndexes: Array<number> = [];
 
     if (!pawn) {
@@ -24,31 +21,28 @@ export class PawnMoveParserService implements MoveParserService<Pawn> {
 
     let newPosition = moveUp.getNewPosition(pawn.position, pawn.color);
 
-    if (!board[newPosition].piece) {
+    if (newPosition && !board[newPosition].piece) {
       possibleIndexes.push(newPosition);
     }
-    if (!pawn.hasMoved) {
+    if (!pawn.hasMoved && newPosition) {
       newPosition = moveUp.getNewPosition(newPosition, pawn.color);
-      if (!board[newPosition].piece) {
+      if (newPosition && !board[newPosition].piece) {
         possibleIndexes.push(newPosition);
       }
     }
-
-    if (pawn.position % 8 !== 0) {
-      newPosition = moveDiagonalUpLeft.getNewPosition(
-        pawn.position,
-        pawn.color
-      );
-      if (
-        board[newPosition].piece &&
-        board[newPosition].piece?.color !== pawn.color
-      ) {
-        possibleIndexes.push(newPosition);
-      }
+    newPosition = moveDiagonalUpLeft.getNewPosition(pawn.position, pawn.color);
+    if (
+      newPosition &&
+      board[newPosition].piece &&
+      board[newPosition].piece?.color !== pawn.color
+    ) {
+      possibleIndexes.push(newPosition);
     }
 
     newPosition = moveDiagonalUpRight.getNewPosition(pawn.position, pawn.color);
+
     if (
+      newPosition &&
       board[newPosition].piece &&
       board[newPosition].piece?.color !== pawn.color
     ) {
