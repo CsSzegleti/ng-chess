@@ -11,25 +11,31 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class PawnMoveParserService implements MoveParserService<Pawn> {
-  possibleNewPosition(board: Array<Tile>, pawn: Pawn): Array<number> {
+export class PawnMoveParserService extends MoveParserService<Pawn> {
+
+  constructor() {
+    super(Pawn)
+  }
+
+  possibleNewPosition(
+    board: Array<Tile>,
+    currentPosition: number
+  ): Array<number> {
+
+    const pawn: Pawn = this.getValidPiece(board, currentPosition) as Pawn
+
     const possibleIndexes: Array<number> = [];
 
-    if (!pawn) {
-      return possibleIndexes;
-    }
+    let newPosition: number | undefined = currentPosition;
 
-    let newPosition = moveUp.getNewPosition(pawn.position, pawn.color);
-
-    if (newPosition && !board[newPosition].piece) {
+    for (let index = 0; index < 2; index++) {
+      newPosition = moveUp.getNewPosition(newPosition, pawn.color);
+      if (!newPosition) break;
+      if (board[newPosition].piece) break;
+      if (index === 2 && pawn.hasMoved) break;
       possibleIndexes.push(newPosition);
     }
-    if (!pawn.hasMoved && newPosition) {
-      newPosition = moveUp.getNewPosition(newPosition, pawn.color);
-      if (newPosition && !board[newPosition].piece) {
-        possibleIndexes.push(newPosition);
-      }
-    }
+
     newPosition = moveDiagonalUpLeft.getNewPosition(pawn.position, pawn.color);
     if (
       newPosition &&
