@@ -8,7 +8,8 @@ import { Pawn } from '../../models/pieces/pawn';
 import { Queen } from '../../models/pieces/queen';
 import { Rook } from '../../models/pieces/rook';
 import { BoardComponent } from "../board/board.component";
-import { PawnMoveParserService } from '../../services/move/pawn-move-parser.service';
+import { GameService } from '../../services/game.service';
+import { MoveParserProviderService } from '../../services/move/move-parser-provider.service';
 
 @Component({
   selector: 'app-game',
@@ -18,7 +19,10 @@ import { PawnMoveParserService } from '../../services/move/pawn-move-parser.serv
 })
 export class GameComponent {
 
-  constructor(private moveParser: PawnMoveParserService) { }
+  constructor(
+    public gameService: GameService,
+    public moveParserProvider: MoveParserProviderService,
+  ) { }
 
   tiles: Array<Tile> = new Array(
     new Tile(new Rook(Color.dark, 0)), new Tile(new Knight(Color.dark, 1)), new Tile(new Bishop(Color.dark, 2)), new Tile(new Queen(Color.dark, 3)), new Tile(new King(Color.dark, 4)), new Tile(new Bishop(Color.dark, 5)), new Tile(new Knight(Color.dark, 6)), new Tile(new Rook(Color.dark, 7)),
@@ -48,9 +52,16 @@ export class GameComponent {
 
     if (!this.highlightedTileIndex) {
       this.highlightedTileIndex = tileIndex;
-      this.markedTileIndexes = this.moveParser.possibleNewPosition(this.tiles, this.tiles[this.highlightedTileIndex].piece as Pawn) // TODO implement factory
+      const highlightedPiece = this.tiles[this.highlightedTileIndex].piece;
+
+      if (highlightedPiece) {
+        this.markedTileIndexes = this.moveParserProvider
+          .getMoveParserFor(highlightedPiece)
+          .possibleNewPosition(this.tiles, this.highlightedTileIndex);
+      }
       return;
     }
+
 
     this.movePiece(this.highlightedTileIndex, tileIndex);
     this.highlightedTileIndex = undefined
@@ -64,6 +75,7 @@ export class GameComponent {
     if (!fromTile.piece) {
       return;
     }
+
     toTile.piece = fromTile.piece;
     toTile.piece.position = toIndex;
     fromTile.piece = undefined
