@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TileComponent } from "../tile/tile.component";
 import { Tile } from '../../models/tile';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-board',
-  imports: [TileComponent, CommonModule],
+  imports: [TileComponent],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss'
 })
