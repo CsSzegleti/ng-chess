@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { TileComponent } from "../tile/tile.component";
 import { Tile } from '../../models/tile';
 
@@ -7,6 +7,7 @@ import { Tile } from '../../models/tile';
   selector: 'app-board',
   imports: [TileComponent],
   templateUrl: './board.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './board.component.scss'
 })
 export class BoardComponent {

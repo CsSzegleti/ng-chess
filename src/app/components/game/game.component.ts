@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Tile } from '../../models/tile';
 import { Color } from '../../enums/color';
 import { Bishop } from '../../models/pieces/bishop';
@@ -15,6 +15,7 @@ import { MoveParserProviderService } from '../../services/move/move-parser-provi
   selector: 'app-game',
   imports: [BoardComponent],
   templateUrl: './game.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './game.component.scss'
 })
 export class GameComponent {
