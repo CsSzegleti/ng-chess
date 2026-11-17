@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy, ModelSignal, model } from '@angular/core';
 import { TileComponent } from "../tile/tile.component";
 import { Tile } from '../../models/tile';
 
@@ -15,7 +15,7 @@ export class BoardComponent {
   @Input() highlightedTileIdx?: number
   @Output() highligtedTileIdxChange: EventEmitter<number> = new EventEmitter();
 
-  @Input() tiles: Array<Tile> = new Array(
+  tiles: ModelSignal<Array<Tile>> = model(new Array(
     new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(),
     new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(),
     new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(),
@@ -24,7 +24,7 @@ export class BoardComponent {
     new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(),
     new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(),
     new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(),
-  )
+  ))
 
   @Input() markedTiles: Array<number> = []
 

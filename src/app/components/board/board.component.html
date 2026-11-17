@@ -1,9 +1,9 @@
 <div class="grid">
-  @for (tile of tiles; track $index; let idx = $index) {
+  @for (tile of tiles(); track $index; let idx = $index) {
     <app-tile [isMarked]="this.markedTiles.includes(idx)" [color]="calculateBackground(idx)" (click)="this.highligtedTileIdxChange.emit(idx)">
-      @if (this.tiles[idx].piece) {
+      @if (this.tiles()[idx].piece) {
         <div>
-          <img src="pieces/{{this.tiles[idx].piece?.getAssetName()}}" alt="{{this.tiles[idx].piece?.getAssetName()}}">
+          <img src="pieces/{{this.tiles()[idx].piece?.getAssetName()}}" alt="{{this.tiles()[idx].piece?.getAssetName()}}">
         </div>
       }
     </app-tile>

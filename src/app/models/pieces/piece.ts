@@ -2,6 +2,8 @@ import { Color } from "../../enums/color";
 
 export abstract class Piece {
 
+  hasMoved = false;
+
   public get position(): number {
     return this._position;
   }

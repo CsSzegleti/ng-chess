@@ -6,5 +6,4 @@ export class King extends Piece {
     super(color, position, 'k')
   }
 
-  hasMoved = true;
 }
