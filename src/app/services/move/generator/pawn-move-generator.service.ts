@@ -1,24 +1,18 @@
 import { Injectable } from '@angular/core';
-import { MoveParserService } from './move-parser.service';
+import { MoveGeneratorService } from './move-generator.service';
 import { Pawn } from '../../models/pieces/pawn';
 import { Tile } from '../../models/tile';
-import {
-  moveDiagonalUpLeft,
-  moveDiagonalUpRight,
-  moveUp,
-} from '../../models/move';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PawnMoveParserService extends MoveParserService<Pawn> {
+export class PawnMoveParserService extends MoveGeneratorService<Pawn> {
 
   constructor() {
     super(Pawn)
   }
 
-  possibleNewPosition(
-    board: Array<Tile>,
+  possibleNewPositions(
     currentPosition: number
   ): Array<number> {
 

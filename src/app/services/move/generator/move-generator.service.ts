@@ -1,15 +1,17 @@
-import { Tile } from '../../models/tile';
-import { Piece } from '../../models/pieces/piece';
-import { Pawn } from '../../models/pieces/pawn';
-import { Color } from '../../enums/color';
-import { Move } from '../../models/move';
+import { Tile } from '../../../models/tile';
+import { Piece } from '../../../models/pieces/piece';
+import { Color } from '../../../enums/color';
+import { Move } from '../../../models/move';
+import { BOARD_TOKEN } from '../../../app.config';
+import { inject } from '@angular/core';
 
-export abstract class MoveParserService<P extends Piece> {
+export abstract class MoveGeneratorService<P extends Piece> {
+
+  private board = inject(BOARD_TOKEN)
+
   constructor(private pieceType: new (color: Color, position: number) => P) {}
 
-  abstract possibleNewPosition(
-    board: Array<Tile>,
-    currentPosition: number
+  abstract possibleNewPositions(
   ): Array<number>;
 
   getValidPiece(board: Array<Tile>, currentPosition: number): Piece {

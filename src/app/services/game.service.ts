@@ -13,8 +13,7 @@ export class GameService {
   highlightedTileIdx? = undefined;
 
   newGame() {
-    this.boardStates = [new Board()]
-    this.boardStates[0].reset()
+    // TODO implement
   }
 
   public get currentState() {

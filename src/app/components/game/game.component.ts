@@ -7,24 +7,24 @@ import { Knight } from '../../models/pieces/knight';
 import { Pawn } from '../../models/pieces/pawn';
 import { Queen } from '../../models/pieces/queen';
 import { Rook } from '../../models/pieces/rook';
-import { BoardComponent } from "../board/board.component";
+import { BoardComponent } from '../board/board.component';
 import { GameService } from '../../services/game.service';
-import { MoveParserProviderService } from '../../services/move/move-parser-provider.service';
+import { MoveGeneratorProviderService } from '../../services/move/move-generator-provider.service';
 
 @Component({
   selector: 'app-game',
   imports: [BoardComponent],
   templateUrl: './game.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: './game.component.scss'
+  styleUrl: './game.component.scss',
 })
 export class GameComponent {
-
   constructor(
     public gameService: GameService,
-    public moveParserProvider: MoveParserProviderService,
-  ) { }
+    public moveGeneratorProvider: MoveGeneratorProviderService,
+  ) {}
 
+  // prettier-ignore
   tiles: Array<Tile> = new Array(
     new Tile(new Rook(Color.dark, 0)), new Tile(new Knight(Color.dark, 1)), new Tile(new Bishop(Color.dark, 2)), new Tile(new Queen(Color.dark, 3)), new Tile(new King(Color.dark, 4)), new Tile(new Bishop(Color.dark, 5)), new Tile(new Knight(Color.dark, 6)), new Tile(new Rook(Color.dark, 7)),
     new Tile(new Pawn(Color.dark, 8)), new Tile(new Pawn(Color.dark, 9)), new Tile(new Pawn(Color.dark, 10)), new Tile(new Pawn(Color.dark, 11)), new Tile(new Pawn(Color.dark, 12)), new Tile(new Pawn(Color.dark, 13)), new Tile(new Pawn(Color.dark, 14)), new Tile(new Pawn(Color.dark, 15)),
@@ -38,12 +38,12 @@ export class GameComponent {
 
   highlightedTileIndex?: number = undefined;
 
-  markedTileIndexes: Array<number> = []
+  markedTileIndexes: Array<number> = [];
 
   onHighlightedTileChange(tileIndex: number) {
     if (this.highlightedTileIndex === tileIndex) {
       this.highlightedTileIndex = undefined;
-      this.markedTileIndexes = []
+      this.markedTileIndexes = [];
       return;
     }
 
@@ -56,17 +56,16 @@ export class GameComponent {
       const highlightedPiece = this.tiles[this.highlightedTileIndex].piece;
 
       if (highlightedPiece) {
-        this.markedTileIndexes = this.moveParserProvider
+        this.markedTileIndexes = this.moveGeneratorProvider
           .getMoveParserFor(highlightedPiece)
-          .possibleNewPosition(this.tiles, this.highlightedTileIndex);
+          .possibleNewPositions(this.tiles, this.highlightedTileIndex);
       }
       return;
     }
 
-
     this.movePiece(this.highlightedTileIndex, tileIndex);
-    this.highlightedTileIndex = undefined
-    this.markedTileIndexes = []
+    this.highlightedTileIndex = undefined;
+    this.markedTileIndexes = [];
   }
 
   private movePiece(fromIndex: number, toIndex: number) {
@@ -79,6 +78,6 @@ export class GameComponent {
 
     toTile.piece = fromTile.piece;
     toTile.piece.position = toIndex;
-    fromTile.piece = undefined
+    fromTile.piece = undefined;
   }
 }
