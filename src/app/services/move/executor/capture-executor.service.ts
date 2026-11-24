@@ -1,39 +1,31 @@
 import { Service } from '@angular/core';
-import { inject } from '@angular/core';
-import { DARK_PLAYER, LIGHT_PLAYER } from '../../../app.config';
 import { MoveExecutorService } from './move-executor.service';
 import { Move } from '../../../models/move';
-import { Color } from '../../../enums/color';
 
 @Service()
 export class CaptureExecutorService extends MoveExecutorService {
-  private lightPlayer = inject(LIGHT_PLAYER);
-  private darkPlayer = inject(DARK_PLAYER);
 
   override execute(move: Move): void {
-    const fromTile = this.board.tiles[move.from];
-    const fromPiece = fromTile.piece;
-    const capturingPlayer =
-      move.piece.color === Color.dark ? this.lightPlayer : this.darkPlayer;
-
+    this.validate(move);
+    const fromPiece = this.fromPieceToHand(move);
     if (!fromPiece) return;
 
-    capturingPlayer.capturedPieces.push(fromPiece);
-    fromTile.piece = undefined;
+    this.board.capturedPieces.push(fromPiece);
   }
 
   override undo(move: Move): void {
-    const capturingPlayer =
-      move.piece.color === Color.dark ? this.lightPlayer : this.darkPlayer;
-    const fromTile = this.board.tiles[move.from];
-    const fromPiece = capturingPlayer.pieces.pop();
+    const fromTile = this.board.tiles[move.from!];
+    const fromPiece = this.board.capturedPieces.pop();
 
     fromTile.piece = fromPiece;
   }
 
   protected override validate(move: Move): void {
+    if (move.from == undefined) {
+      throw new Error('No from location')
+    }
     if (move.to != undefined) {
-      throw new Error('Invalid location.');
+      throw new Error('Invalid capture move.');
     }
   }
 }
