@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { Tile } from '../../models/tile';
 import { Color } from '../../enums/color';
 import { Bishop } from '../../models/pieces/bishop';
@@ -9,7 +9,9 @@ import { Queen } from '../../models/pieces/queen';
 import { Rook } from '../../models/pieces/rook';
 import { BoardComponent } from '../board/board.component';
 import { GameService } from '../../services/game.service';
-import { MoveGeneratorProviderService } from '../../services/move/move-generator-provider.service';
+import { MoveGeneratorProviderService } from '../../services/move/generator/move-generator-provider.service';
+import { BoardInitializerService } from '../../services/board-initializer.service';
+import { Board } from '../../models/board';
 
 @Component({
   selector: 'app-game',
@@ -19,35 +21,28 @@ import { MoveGeneratorProviderService } from '../../services/move/move-generator
   styleUrl: './game.component.scss',
 })
 export class GameComponent {
-  constructor(
-    public gameService: GameService,
-    public moveGeneratorProvider: MoveGeneratorProviderService,
-  ) {}
-
-  // prettier-ignore
-  tiles: Array<Tile> = new Array(
-    new Tile(new Rook(Color.dark, 0)), new Tile(new Knight(Color.dark, 1)), new Tile(new Bishop(Color.dark, 2)), new Tile(new Queen(Color.dark, 3)), new Tile(new King(Color.dark, 4)), new Tile(new Bishop(Color.dark, 5)), new Tile(new Knight(Color.dark, 6)), new Tile(new Rook(Color.dark, 7)),
-    new Tile(new Pawn(Color.dark, 8)), new Tile(new Pawn(Color.dark, 9)), new Tile(new Pawn(Color.dark, 10)), new Tile(new Pawn(Color.dark, 11)), new Tile(new Pawn(Color.dark, 12)), new Tile(new Pawn(Color.dark, 13)), new Tile(new Pawn(Color.dark, 14)), new Tile(new Pawn(Color.dark, 15)),
-    new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(),
-    new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(),
-    new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(),
-    new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(), new Tile(),
-    new Tile(new Pawn(Color.light, 48)), new Tile(new Pawn(Color.light, 49)), new Tile(new Pawn(Color.light, 50)), new Tile(new Pawn(Color.light, 51)), new Tile(new Pawn(Color.light, 52)), new Tile(new Pawn(Color.light, 53)), new Tile(new Pawn(Color.light, 54)), new Tile(new Pawn(Color.light, 55)),
-    new Tile(new Rook(Color.light, 56)), new Tile(new Knight(Color.light, 57)), new Tile(new Bishop(Color.light, 58)), new Tile(new Queen(Color.light, 59)), new Tile(new King(Color.light, 60)), new Tile(new Bishop(Color.light, 61)), new Tile(new Knight(Color.light, 62)), new Tile(new Rook(Color.light, 63)),
+  gameService: GameService = inject(GameService);
+  moveGeneratorProvider: MoveGeneratorProviderService = inject(
+    MoveGeneratorProviderService,
   );
+  boardInitializer: BoardInitializerService = inject(BoardInitializerService);
+  protected board = inject(Board);
+
+  constructor() {}
 
   highlightedTileIndex?: number = undefined;
 
   markedTileIndexes: Array<number> = [];
 
   onHighlightedTileChange(tileIndex: number) {
+    const tile = this.board.tiles[tileIndex];
     if (this.highlightedTileIndex === tileIndex) {
       this.highlightedTileIndex = undefined;
       this.markedTileIndexes = [];
       return;
     }
 
-    if (!this.tiles[tileIndex].piece && !this.highlightedTileIndex) {
+    if (!tile.piece && !this.highlightedTileIndex) {
       return;
     }
 
@@ -58,7 +53,7 @@ export class GameComponent {
       if (highlightedPiece) {
         this.markedTileIndexes = this.moveGeneratorProvider
           .getMoveParserFor(highlightedPiece)
-          .possibleNewPositions(this.tiles, this.highlightedTileIndex);
+          .possibleNewPositions(this.tiles, this.highlightedTileIndex).map((move) => move.to).filter((move) => move.to)
       }
       return;
     }
